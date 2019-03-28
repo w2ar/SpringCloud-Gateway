@@ -1,0 +1,28 @@
+#spring.cloud.gateway.discovery.locator.enabled：
+#是否与服务注册于发现组件进行结合，通过 serviceId 转发到具体的服务实例。默认为false，
+#设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+     routes:
+      - id: apiGateway
+        uri: lb://API-GATEWAY
+        predicates:
+         - Path=/**
+        filters:
+          - name: Hystrix
+            args:
+             name: fallbackcmd
+             fallbackUri: forward:/fallback
+     discovery:
+        locator:
+          #lowerCaseServiceId 可小寫配置
+          lowerCaseServiceId: true
+          enabled: true
+        
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka1:8760/eureka/

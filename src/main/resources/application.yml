@@ -6,22 +6,26 @@ spring:
     name: API-GATEWAY
   cloud:
     gateway:
+     default-filters:
+        - StripPrefix=1
      routes:
-      - id: apiGateway
-        uri: lb://API-GATEWAY
-        predicates:
-         - Path=/**
+      - predicates:
+        - Path=/eureakaClient/**
+        uri: lb://EUREKA-CLIENT
         filters:
           - name: Hystrix
             args:
              name: fallbackcmd
-             fallbackUri: forward:/fallback
+             fallbackUri: forward:/clientFallback
+     #自己配置 filter 導致底下無效
      discovery:
         locator:
           #lowerCaseServiceId 可小寫配置
           lowerCaseServiceId: true
           enabled: true
-        
+logging:
+  level:
+    org.springframework.cloud.gateway: debug        
 eureka:
   client:
     service-url:

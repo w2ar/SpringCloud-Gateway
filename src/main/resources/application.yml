@@ -23,6 +23,7 @@ spring:
           #lowerCaseServiceId 可小寫配置
           lowerCaseServiceId: true
           enabled: true
+
 logging:
   level:
     org.springframework.cloud.gateway: debug        
